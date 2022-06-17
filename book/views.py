@@ -62,11 +62,13 @@ class UpdateBookView(LoginRequiredMixin, UpdateView):
 def index_view(request):
     object_list = Book.objects.order_by('-id')
     ranking_list = Book.objects.annotate(avg_rating=Avg('review__rate')).order_by('-avg_rating')
+    paginator_1 = Paginator(object_list, 4)
     paginator = Paginator(ranking_list, ITEM_PER_PAGE)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.page(page_number)
-    return render(request, 'book/index.html', {'object_list': object_list, 'ranking_list' : ranking_list, 'page_obj':page_obj})
-
+    page_obj1 = paginator_1.page(page_number)
+    return render(request, 'book/index.html', {'object_list': object_list, 'ranking_list' : ranking_list, 'page_obj':page_obj, 'page_obj1':page_obj1})
+    
 
 class CreateReviewView(LoginRequiredMixin, CreateView):
     model = Review
