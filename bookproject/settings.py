@@ -25,9 +25,9 @@ load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['django-bookproject-tubokotu.herokuapp']
 #django-bookproject-tubokotu.herokuapp.com
 
 # Application definition
@@ -138,4 +138,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
 
-# SECRET_KEY = 'django-insecure-w@&@l^jzqa8tgzr)6*g($h)uz$%ed*)0#9o&uc9d*nb@l5xau+'
