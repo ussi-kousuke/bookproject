@@ -22,12 +22,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv()
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['django-bookproject-tubokotu.herokuapp']
+ALLOWED_HOSTS = ['django-bookproject-tubokotu.herokuapp.com']
 #django-bookproject-tubokotu.herokuapp.com
 
 # Application definition
@@ -46,6 +45,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -124,7 +124,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = BASE_DIR / 'static'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = (
+ os.path.join(BASE_DIR, 'static'),
+)
 
 MEDIA_URL = '/media/'
 
@@ -138,3 +142,23 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
 
+
+#Heroku database
+import dj_database_url
+
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
+db_from_env = dj_database_url.config(conn_max_age=600,
+ssl_require=True)
+DATABASES['default'].update(db_from_env)
+
+try:
+ from .local_settings import *
+except ImportError:
+ pass
+
+if not DEBUG:
+ SECRET_KEY = 'django-insecure-w@&@l^jzqa8tgzr)6*g($h)uz$%ed*)0#9o&uc9d*nb@l5xau+' #削除したSECRET_KEYをコピペします
+
+ import django_heroku
+ django_heroku.settings(locals())

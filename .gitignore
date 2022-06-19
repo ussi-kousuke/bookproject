@@ -1,20 +1,5 @@
-# pythonのキャッシュが自動で生成されているので除外
-_pycache_/
-
-# 環境変数は除外
-.env
-
-#仮想環境は除外
-/venv/
-
-#mediaディレクトリに.gitkeppというファイルを作成し、それ以外は除外
-/media/*
-!/media/.gitkeep
-
-#static ディレクトリに.gitkeepというファイルを作成し、それ以外は除外
-/static/*
-!/static/.gitkeep
-
-# DBは除外
-
+myvenv
 db.sqlite3
+.DS_Store
+local_settings.py 
+
