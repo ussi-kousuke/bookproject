@@ -1,12 +1,20 @@
+from multiprocessing import context
+from pydoc import pager
 from django.shortcuts import render, redirect
 from django.urls import  reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from .models import Book, Review
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.db.models import Avg
+from django.db.models import Avg, Q
 from django.core.paginator import Paginator
 from .consts import ITEM_PER_PAGE
+from django.contrib import messages
+from django.views import generic
+
+
+
+
 
 # Create your views here.
 
@@ -87,4 +95,72 @@ class CreateReviewView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse('detail-book', kwargs={'pk': self.object.book.id})
 
+
+def SearchBook(request):
+        keyword = request.GET.get('keyword')
+        page_obj1 = Book.objects.order_by('-id')
+        if keyword:
+            page_obj1 = page_obj1.filter(
+                Q(title__icontains=keyword)
+            )
+            messages.success(request, '{}の検索結果'.format(keyword))
+        
+        else:
+            page_obj1 = page_obj1.all()
+            print(page_obj1)
+        context = {
+            'page_obj1': page_obj1,
+        }
+        return render(request, 'book/book_search.html', context)
+
     
+
+    
+def Categorize_by_business(request):
+    object_list = Book.objects.filter(category='business')
+    paginator = Paginator(object_list, 4)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.page(page_number)
+    context = {
+        'page_obj1':page_obj,
+    }
+    
+    return render(request, 'book/categorize_by_category.html' ,context)
+    
+
+def Categorize_by_science_and_Technology(request):
+    
+    object_list = Book.objects.filter(category='science ・Technology')
+    paginator = Paginator(object_list, 4)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.page(page_number)
+    context = {
+        'page_obj1':page_obj,
+    }
+    
+    return render(request, 'book/categorize_by_category.html' ,context)
+
+def Categorize_by_Humanities_and_ideas(request):
+    
+    object_list = Book.objects.filter(category='Humanities・ideas')
+    paginator = Paginator(object_list, 4)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.page(page_number)
+    context = {
+        'page_obj1':page_obj,
+    }
+    
+    return render(request, 'book/categorize_by_category.html' ,context)
+
+def Categorize_by_computer_and_IT(request):
+    
+    object_list = Book.objects.filter(category='computer・IT')
+    paginator = Paginator(object_list, 4)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.page(page_number)
+    context = {
+        'page_obj1':page_obj,
+    }
+    
+    return render(request, 'book/categorize_by_category.html' ,context)
+
