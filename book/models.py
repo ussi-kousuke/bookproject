@@ -10,6 +10,7 @@ class Book(models.Model):
     title = models.CharField(max_length=100)
     text = models.TextField()
     thumbnail = models.ImageField(null=True, blank=True)
+    img_url = models.URLField(null=True, max_length=1000)
     category = models.CharField(
         max_length = 100,
         choices = CATEGORY
