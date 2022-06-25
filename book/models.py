@@ -17,6 +17,9 @@ class Book(models.Model):
     )
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
 
+    
+
+   
 class Review(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)

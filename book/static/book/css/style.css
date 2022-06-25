@@ -27,3 +27,8 @@ a {
     transform: rotate(35deg);
     transform-origin: left top;
 }
+
+#img-thumbnail {
+    height: 272px;
+    width: 185px;
+}
