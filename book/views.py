@@ -97,21 +97,23 @@ class CreateReviewView(LoginRequiredMixin, CreateView):
 
 
 def SearchBook(request):
-        keyword = request.GET.get('keyword')
-        page_obj1 = Book.objects.order_by('-id')
-        if keyword:
-            page_obj1 = page_obj1.filter(
-                Q(title__icontains=keyword)
-            )
-            messages.success(request, '{}の検索結果'.format(keyword))
-        
-        else:
-            page_obj1 = page_obj1.all()
-            print(page_obj1)
-        context = {
-            'page_obj1': page_obj1,
-        }
-        return render(request, 'book/book_search.html', context)
+    page_obj1 = Book.objects.order_by('-id')
+    keyword = request.GET.get('keyword')
+    if keyword:
+        page_obj1 = page_obj1.filter(
+            Q(title__icontains=keyword)
+        )
+        messages.success(request, '{}の検索結果'.format(keyword))
+    
+
+    context = {
+        'page_obj1': page_obj1,
+    }
+    
+    return render(request, 'book/book_search.html', context)
+
+    
+    
 
     
 
