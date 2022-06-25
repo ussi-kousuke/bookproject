@@ -24,7 +24,6 @@
         <a href="{% url 'update-book' object.pk %}" class="btn btn-primary">編集する</a>
         <a href="{% url 'delete-book' object.pk  %}" class="btn btn-primary">削除する</a>
         <a href="{% url 'review' object.pk  %}" class="btn btn-primary">レビューする</a>
-        <h6>{{ object.category }}</h6>
     </div>
 {% endblock content%}
 
@@ -38,6 +37,3 @@
 
 
 
-{{ object.category }}
-{{ object.title }}
-{{ object.text }}

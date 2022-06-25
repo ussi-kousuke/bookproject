@@ -6,7 +6,7 @@
 {% block content %}
 <div class="row">
     <div class="col-9">
-        {% for item in page_obj1 %}
+        {% for item in page_obj %}
 
         <div class="p-4 m-4 bg-light border border-success rounded">
             <h2 class="text-success">{{ item.title }}</h2>
@@ -17,11 +17,11 @@
             </div>
         </div>
         {% endfor %}
-        {% include 'book/components/pagination1.html' %}
+        {% include 'book/components/pagination.html' %}
     </div >
     <div class="col-3">
-        <h2>評価順TOP3</h2>
-        {% for ranking_book in page_obj %}
+        <h2>評価順TOP5</h2>
+        {% for ranking_book in ranking_list %}
             <div class="p-4 m-4 bg-light border border-success rounded">
                 <h3 class="text-success h5">{{ ranking_book.title }}</h3>
                 <img src="{{ ranking_book.thumbnail.url }}" class="img-thumbnail"/>
@@ -30,7 +30,7 @@
             </div>
 
         {% endfor %}
-        {% include 'book/components/pagination.html' %}
+        
     </div>
 </div>
 {% endblock content%}

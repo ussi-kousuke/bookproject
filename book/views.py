@@ -1,5 +1,6 @@
 from multiprocessing import context
 from pydoc import pager
+from re import I
 from django.shortcuts import render, redirect
 from django.urls import  reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
@@ -69,13 +70,11 @@ class UpdateBookView(LoginRequiredMixin, UpdateView):
 
 def index_view(request):
     object_list = Book.objects.order_by('-id')
-    ranking_list = Book.objects.annotate(avg_rating=Avg('review__rate')).order_by('-avg_rating')
-    paginator_1 = Paginator(object_list, 4)
-    paginator = Paginator(ranking_list, ITEM_PER_PAGE)
+    ranking_list = Book.objects.annotate(avg_rating=Avg('review__rate')).order_by('-avg_rating')[:5]
+    paginator = Paginator(object_list, ITEM_PER_PAGE)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.page(page_number)
-    page_obj1 = paginator_1.page(page_number)
-    return render(request, 'book/index.html', {'object_list': object_list, 'ranking_list' : ranking_list, 'page_obj':page_obj, 'page_obj1':page_obj1})
+    return render(request, 'book/index.html', {'ranking_list' : ranking_list, 'page_obj':page_obj})
     
 
 class CreateReviewView(LoginRequiredMixin, CreateView):
@@ -96,35 +95,32 @@ class CreateReviewView(LoginRequiredMixin, CreateView):
         return reverse('detail-book', kwargs={'pk': self.object.book.id})
 
 
-def SearchBook(request):
-    page_obj1 = Book.objects.order_by('-id')
+def Search_Book(request):
+    page_obj = Book.objects.order_by('-id')
     keyword = request.GET.get('keyword')
     if keyword:
-        page_obj1 = page_obj1.filter(
+        page_obj = page_obj.filter(
             Q(title__icontains=keyword)
         )
         messages.success(request, '{}の検索結果'.format(keyword))
     
 
     context = {
-        'page_obj1': page_obj1,
+        'page_obj': page_obj,
     }
-    
+
     return render(request, 'book/book_search.html', context)
 
     
-    
-
-    
-
-    
 def Categorize_by_business(request):
+
     object_list = Book.objects.filter(category='business')
-    paginator = Paginator(object_list, 4)
+    paginator = Paginator(object_list, ITEM_PER_PAGE)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.page(page_number)
+
     context = {
-        'page_obj1':page_obj,
+        'page_obj': page_obj,
     }
     
     return render(request, 'book/categorize_by_category.html' ,context)
@@ -133,11 +129,11 @@ def Categorize_by_business(request):
 def Categorize_by_science_and_Technology(request):
     
     object_list = Book.objects.filter(category='science ・Technology')
-    paginator = Paginator(object_list, 4)
+    paginator = Paginator(object_list, ITEM_PER_PAGE)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.page(page_number)
     context = {
-        'page_obj1':page_obj,
+        'page_obj':page_obj,
     }
     
     return render(request, 'book/categorize_by_category.html' ,context)
@@ -145,11 +141,11 @@ def Categorize_by_science_and_Technology(request):
 def Categorize_by_Humanities_and_ideas(request):
     
     object_list = Book.objects.filter(category='Humanities・ideas')
-    paginator = Paginator(object_list, 4)
+    paginator = Paginator(object_list, ITEM_PER_PAGE)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.page(page_number)
     context = {
-        'page_obj1':page_obj,
+        'page_obj':page_obj,
     }
     
     return render(request, 'book/categorize_by_category.html' ,context)
@@ -157,12 +153,24 @@ def Categorize_by_Humanities_and_ideas(request):
 def Categorize_by_computer_and_IT(request):
     
     object_list = Book.objects.filter(category='computer・IT')
-    paginator = Paginator(object_list, 4)
+    paginator = Paginator(object_list, ITEM_PER_PAGE)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.page(page_number)
     context = {
-        'page_obj1':page_obj,
+        'page_obj':page_obj,
     }
     
     return render(request, 'book/categorize_by_category.html' ,context)
 
+
+def Categorize_by_assesment(request):
+    
+    object_list = Book.objects.annotate(avg_rating=Avg('review__rate')).order_by('-avg_rating')
+    paginator = Paginator(object_list, ITEM_PER_PAGE)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.page(page_number)
+    context = {
+        'page_obj':page_obj,
+    }
+    
+    return render(request, 'book/categorize_by_category.html' ,context)
