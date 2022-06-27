@@ -11,7 +11,10 @@ from django.db.models import Avg, Q
 from django.core.paginator import Paginator
 from .consts import ITEM_PER_PAGE
 from django.contrib import messages
-from django.views import generic
+
+from django.views.decorators.csrf import requires_csrf_token
+from django.http import HttpResponseServerError
+
 
 
 
@@ -174,3 +177,10 @@ def Categorize_by_assesment(request):
     }
     
     return render(request, 'book/categorize_by_category.html' ,context)
+
+@requires_csrf_token
+def my_customized_server_error(request, template_name='500.html'):
+    import sys
+    from django.views import debug
+    error_html = debug.technical_500_response(request, *sys.exc_info()).content
+    return HttpResponseServerError(error_html)
