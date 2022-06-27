@@ -1,7 +1,7 @@
 # 本棚アプリケーション
 このアプリは読んだ本の感想、本の要約を自由に投稿することができます。
 
-#Requirements
+# Requirements
 
 - asgiref==3.5.2
 - backports.zoneinfo==0.2.1
@@ -14,10 +14,10 @@
 - sqlparse==0.4.2
 - whitenoise==6.2.0
 
-#Note
+# Note
 スマホには対応しておりません。
 
-#Author
+# Author
 ussi-kousuke
 
 
