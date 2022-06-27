@@ -16,7 +16,13 @@ class Book(models.Model):
         choices = CATEGORY
     )
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-
+    @property
+    def imageURL(self):
+        try:
+            url = self.thumbnail.url
+        except:
+            url=''
+        return url
     
 
    
