@@ -12,7 +12,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import cloudinary
+from dotenv import load_dotenv
 
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -40,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
     'book.apps.BookConfig',
+    'cloudinary',
+    'cloudinary_storage',
     
 ]
 
@@ -136,6 +141,8 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -160,9 +167,15 @@ except ImportError:
  pass
 
 if not DEBUG:
- SECRET_KEY = 'django-insecure-w@&@l^jzqa8tgzr)6*g($h)uz$%ed*)0#9o&uc9d*nb@l5xau+' #削除したSECRET_KEYをコピペします
+    SECRET_KEY = os.getenv('SECRET_KEY')
+    import django_heroku
+    django_heroku.settings(locals())
+    cloudinary.config(
 
- import django_heroku
- django_heroku.settings(locals())
+    CLOUDINARY_STORAGE  = {
+        'CLOUD_NAME': os.getenv('CLOUDINARY_NAME'),
+        'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+        'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+    })
 
 

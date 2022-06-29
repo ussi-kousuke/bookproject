@@ -1,6 +1,7 @@
 from django.db import models
 from .consts import MAX_RATE
 
+
 # Create your models here.
 
 CATEGORY = (('business', 'ビジネス'), ('science ・Technology', '科学・テクノロジー'), ('Humanities ・ ideas', '人文・思想'), ('computer・IT', 'コンピュータ・IT'))
