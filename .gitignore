@@ -3,3 +3,9 @@ db.sqlite3
 .DS_Store
 local_settings.py 
 
+#仮想環境は除外
+/venv/
+
+#環境変数は除外
+.env
+
