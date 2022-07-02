@@ -1,5 +1,7 @@
 from django.db import models
 from .consts import MAX_RATE
+from cloudinary.models import CloudinaryField
+
 
 
 # Create your models here.
@@ -10,7 +12,7 @@ RATE_CHOICES = [(x, str(x))for x in range(0, MAX_RATE + 1)]
 class Book(models.Model):
     title = models.CharField(max_length=100)
     text = models.TextField()
-    thumbnail = models.ImageField(null=True, blank=True)
+    thumbnail = CloudinaryField(null=True, blank=True)
     img_url = models.URLField(null=True, max_length=1000)
     category = models.CharField(
         max_length = 100,
@@ -24,6 +26,7 @@ class Book(models.Model):
         except:
             url=''
         return url
+    
     
 
    
