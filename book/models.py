@@ -12,7 +12,7 @@ RATE_CHOICES = [(x, str(x))for x in range(0, MAX_RATE + 1)]
 class Book(models.Model):
     title = models.CharField(max_length=100)
     text = models.TextField()
-    thumbnail = CloudinaryField(null=True, blank=True)
+    thumbnail = CloudinaryField('image', null=True, blank=True)
     img_url = models.URLField(null=True, max_length=1000)
     category = models.CharField(
         max_length = 100,
@@ -27,7 +27,7 @@ class Book(models.Model):
             url=''
         return url
     
-    
+
 
    
 class Review(models.Model):
